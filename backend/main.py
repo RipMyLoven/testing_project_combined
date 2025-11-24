@@ -11,11 +11,14 @@ RAKENDUSE_NIMI = "Kvaliteedijälg API"
 JSONPLACEHOLDER_URL = "https://jsonplaceholder.typicode.com/posts/1"
 RICK_MORTY_URL = "https://rickandmortyapi.com/api/character/1"
 
+# Loggeri seadistamine
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("kvaliteedijalg.backend")
 
+# FastAPI rakendus
 rakendus = FastAPI(title=RAKENDUSE_NIMI, version="0.1.0")
 
+# CORS lubamine
 rakendus.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -53,6 +56,7 @@ def tervise_kontroll() -> Dict[str, str]:
 @rakendus.get("/api/koond")
 def koonda_andmed() -> Dict[str, Any]:
     """Kombineerib JSONPlaceholderi ja Rick & Morty andmed testitavasse struktuuri."""
+    # API-d
     postitus = hanki_andmed(JSONPLACEHOLDER_URL)
     tegelane = hanki_andmed(RICK_MORTY_URL)
 
@@ -61,6 +65,7 @@ def koonda_andmed() -> Dict[str, Any]:
         extra={"allikad": [JSONPLACEHOLDER_URL, RICK_MORTY_URL]},
     )
 
+    # Koondatud vastus
     koond = {
         "postitus": {
             "id": postitus.get("id"),
@@ -76,4 +81,5 @@ def koonda_andmed() -> Dict[str, Any]:
         "paastikuAeg": datetime.now(timezone.utc).isoformat(),
     }
 
+    logger.info("Tagastan koondatud andmed", extra={"koond": koond})
     return koond
