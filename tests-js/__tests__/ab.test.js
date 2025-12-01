@@ -36,3 +36,26 @@ describe("A/B loogika", () => {
   });
 });
 
+describe("salvestamine", () => {
+  beforeEach(() => {
+    global.localStorage = {
+      store: {},
+      setItem(key, value) { 
+        this.store[key] = value; 
+      },
+      getItem(key) { 
+        return this.store[key]; 
+      },
+      clear() { 
+        this.store = {}; 
+      }
+    };
+  });
+  test("andmete salvestamine localStorage-sse", () => {
+    const data = { variant: "variant_a", sessioonId: "sess-123" };
+    localStorage.setItem("ab_data", JSON.stringify(data));
+    const salvestatud = JSON.parse(localStorage.getItem("ab_data"));
+    expect(salvestatud.variant).toBe("variant_a");
+    expect(salvestatud.sessioonId).toBe("sess-123");
+  });
+});
