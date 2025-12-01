@@ -6,7 +6,7 @@ from typing import Any, Dict
 import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-
+#what
 RAKENDUSE_NIMI = "Kvaliteedijälg API"
 JSONPLACEHOLDER_URL = "https://jsonplaceholder.typicode.com/posts/1"
 RICK_MORTY_URL = "https://rickandmortyapi.com/api/character/1"
